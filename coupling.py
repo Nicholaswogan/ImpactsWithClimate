@@ -11,7 +11,7 @@ def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess
             N_i[i] = sol[sp][-1]*sol['Ntot'][-1]
     c.RH = RH
     c.P_top = P_top
-    c.T_trop = c.T_trop
+    c.T_trop = T_trop
     T = c.surface_temperature_column(N_i, T_guess=T_guess) 
     eddy_ = np.ones(len(c.z))*eddy 
     c.out2atmosphere_txt(atmosphere_out, eddy_, overwrite=True)    

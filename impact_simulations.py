@@ -65,7 +65,7 @@ def nominal():
     params['nz'] = 100
     params['rainfall_rate'] = 1
 
-    params['atol'] = 1e-27
+    params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(5,np.log10(cons.yr*10e6),500)
 
