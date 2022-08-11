@@ -26,10 +26,10 @@ cd ..
 rm -rf clima
 
 # ImpactAtmosphere v4.2.7
-wget https://github.com/Nicholaswogan/ImpactAtmosphere/archive/2528c64c101bbde56db1886c6b59ca3df7cd05f0.zip
-unzip 2528c64c101bbde56db1886c6b59ca3df7cd05f0.zip
-cd ImpactAtmosphere-2528c64c101bbde56db1886c6b59ca3df7cd05f0
+git clone --recursive --branch=main https://github.com/Nicholaswogan/ImpactAtmosphere
+cd ImpactAtmosphere
+git checkout 2528c64c101bbde56db1886c6b59ca3df7cd05f0
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
-rm -rf ImpactAtmosphere-2528c64c101bbde56db1886c6b59ca3df7cd05f0 2528c64c101bbde56db1886c6b59ca3df7cd05f0.zip
+rm -rf ImpactAtmosphere
 ```

@@ -3,6 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from threadpoolctl import threadpool_limits
 import impact_simulations as imp
+from impact_simulations import cons
 import subprocess
 
 def make_movie(params, location, istart):
@@ -32,7 +33,7 @@ def make_movie(params, location, istart):
         ax.set_xlim(1e-10,2)
 
         ax.set_ylim(0,sol_pc['alt'][-1,0])
-        message = 'Time = '+'%.5e'%(sol_pc['time'][i])+' s' \
+        message = 'Time = '+'%.5e'%(sol_pc['time'][i]/cons.yr)+' yr' \
           +'\nSurface Pressure = '+'%.5f'%pc.var.surface_pressure+' bar' \
           +'\nSurface Temperature = '+'%.2f'%pc.T_surf+' K'
         ax.text(0.02, 1.04, message, \
@@ -52,10 +53,10 @@ def make_actual_movie(location):
     subprocess.call(cmd,shell=True)
 
 if __name__ == "__main__":
-    threadpool_limits(limits=1)
+    threadpool_limits(limits=0)
 
     location = '../movie1/'
-    istart = 402
+    istart = 420
 
     make_movie(imp.nominal(), location, istart)
     make_actual_movie(location)
