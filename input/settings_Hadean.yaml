@@ -1,4 +1,3 @@
-description: Settings for the photochemical model.
 
 atmosphere-grid:
   bottom: 0.0 # cm
@@ -12,17 +11,18 @@ photolysis-grid:
   number-of-bins: 200
 
 planet:
-  use-background-gas: true
-  background-gas: H2
-  surface-pressure: 1.013
   planet-mass: 5.972e27 
   planet-radius: 6.371e8
-  surface-albedo: 0.25
+  surface-albedo: 0.2
   diurnal-averaging-factor: 0.5
-  solar-zenith-angle: 50.0
-  diff-lim-hydrogen-escape: true
+  solar-zenith-angle: 60.0
+  hydrogen-escape:
+    type: zahnle
+    S1: 20
+  evolve-climate: true
   water:
-    fix-water-in-troposphere: false
+    fix-water-in-troposphere: true
+    relative-humidity: 1
     water-condensation: true
     gas-rainout: true
     rainfall-rate: 1
@@ -55,6 +55,31 @@ particles:
   condensation-rate: {A: 1.0e-8, rhc: 1.0, rh0: 1.05}
 - name: NH3aer
   condensation-rate: {A: 1.0e-8, rhc: 1.0, rh0: 1.05}  
+
+optical-properties:
+  ir:
+    k-method: RandomOverlapResortRebin
+    number-of-bins: 8
+    opacities:
+      k-distributions: [H2O, CO2, CH4]
+      CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
+      rayleigh: true
+      particle-xs:
+        - {name: HCaer1, data: khare1984}
+        - {name: HCaer2, data: khare1984}
+        - {name: HCaer3, data: khare1984}
+  solar:
+    k-method: RandomOverlapResortRebin
+    number-of-bins: 8
+    opacities:
+      k-distributions: [H2O, CO2, CH4]
+      CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
+      rayleigh: true
+      photolysis-xs: true
+      particle-xs:
+        - {name: HCaer1, data: khare1984}
+        - {name: HCaer2, data: khare1984}
+        - {name: HCaer3, data: khare1984}
   
 boundary-conditions:
 - name: O1D
@@ -63,9 +88,6 @@ boundary-conditions:
   type: short lived
 - name: 1CH2
   type: short lived
-- name: H2O
-  lower-boundary: {type: mix, mix: 1e-2}
-  upper-boundary: {type: veff, veff: 0.0}
 - name: HCN
   lower-boundary: {type: vdep, vdep: 7e-3}
   upper-boundary: {type: veff, veff: 0.0}

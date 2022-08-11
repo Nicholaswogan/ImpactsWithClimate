@@ -1,15 +1,17 @@
 import numpy as np
-from pathos.multiprocessing import ProcessingPool as Pool
 
 from ImpactAtmosphere import SteamAtm
-from coupling import output2photochem
-from photochem import Atmosphere, zahnle_earth
+from coupling import couple2photochem
+from photochem import EvoAtmosphere, zahnle_earth
+from clima import WaterAdiabatClimate
+
+from threadpoolctl import threadpool_limits
 
 class Constants:
     yr = 365*24*60*60
 cons = Constants()
 
-def impact_evolve(init, settings_in, outfile, eddy, ztop, nz, zero_out, rainfall_rate, atol, rtol, t_eval):
+def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, atol, rtol, t_eval):
     N_H2O_ocean = init['N_H2O_ocean']
     N_CO2 = init['N_CO2']
     N_N2  = init['N_N2']
@@ -17,61 +19,50 @@ def impact_evolve(init, settings_in, outfile, eddy, ztop, nz, zero_out, rainfall
     stm = SteamAtm('zahnle_earth_ct.yaml')
     sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i)
 
+    c = WaterAdiabatClimate('input/adiabat_species.yaml', \
+                            'input/adiabat_settings.yaml', \
+                            'input/Sun_4.0Ga.txt')
+
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
 
-    output2photochem(stm, sol_stm, settings_in, settings_out, atmosphere_out, eddy, ztop, nz, zero_out, rainfall_rate)
+    couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
+                 eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
     
-    pc = Atmosphere(zahnle_earth,\
-                    settings_out,\
-                    "input/Sun_4.0Ga.txt",\
-                    atmosphere_out)
+    pc = EvoAtmosphere(zahnle_earth,\
+                       settings_out,\
+                       "input/Sun_4.0Ga.txt",\
+                       atmosphere_out)
+
+    pc.T_trop = T_trop
+    pc.P_top_min = 1.0e-7
+    pc.P_top_max = 1e10
+    pc.top_atmos_adjust_frac = 0.02
 
     pc.var.atol = atol  
     pc.var.rtol = rtol      
     t_start = 0.0
     success = pc.evolve(outfile+'.dat',t_start, pc.wrk.usol, t_eval, overwrite=True)
 
-def Ceres_nominal():
+def nominal():
     params = {}
 
     init = {}
     init['N_H2O_ocean'] = 15.0e3
     init['N_CO2'] = 23.*0.1
     init['N_N2'] = 36.
-    init['M_i'] = 2e24
+    init['M_i'] = 2.589e23
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
     params['outfile'] = "results/CO2=2.3e0_N2=3.6e1_M_i=2.0e24_eddy=1e6"
     params['eddy'] = 1e6
-    params['ztop'] = 2200e5
-    params['nz'] = 200
+    params['RH'] = 1.0
+    params['P_top'] = 1.0e-4
+    params['T_trop'] = 200
+    params['T_guess'] = 400
     params['zero_out'] = ['NH3']
-    params['rainfall_rate'] = -1
-
-    params['atol'] = 1e-27
-    params['rtol'] = 1e-3
-    params['t_eval'] = np.logspace(5,np.log10(cons.yr*10e6),500)
-
-    return params
-
-def Ceres_rain():
-    params = {}
-
-    init = {}
-    init['N_H2O_ocean'] = 15.0e3
-    init['N_CO2'] = 23.*0.1
-    init['N_N2'] = 36.
-    init['M_i'] = 2e24
-    params['init'] = init
-
-    params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/CO2=2.3e0_N2=3.6e1_M_i=2.0e24_eddy=1e6_rain"
-    params['eddy'] = 1e6
-    params['ztop'] = 2200e5
-    params['nz'] = 200
-    params['zero_out'] = []
+    params['nz'] = 100
     params['rainfall_rate'] = 1
 
     params['atol'] = 1e-27
@@ -82,14 +73,9 @@ def Ceres_rain():
 
     
 if __name__ == "__main__":
-    impact_evolve(**Ceres_rain())
+    threadpool_limits(limits=4)
 
-    # def wrap(fun):
-    #     impact_evolve(**fun())
-    # simulations = [Ceres_nominal, Ceres_rain]
-    # p = Pool(2)
-    # p.map(wrap, simulations)
-
+    impact_evolve(**nominal())
     
     
     

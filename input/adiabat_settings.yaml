@@ -11,16 +11,16 @@ planet:
 optical-properties:
   ir:
     k-method: RandomOverlapResortRebin
-    number-of-bins: 16
+    number-of-bins: 8
     opacities:
-      k-distributions: [H2O, CO2, CH4, CO, NH3]
+      k-distributions: [H2O, CO2, CH4]
       CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
       rayleigh: true
   solar:
     k-method: RandomOverlapResortRebin
-    number-of-bins: 16
+    number-of-bins: 8
     opacities:
-      k-distributions: [H2O, CO2, CH4, CO, NH3]
+      k-distributions: [H2O, CO2, CH4]
       CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
       rayleigh: true
-      photolysis-xs: true
+      photolysis-xs: true  
