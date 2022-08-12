@@ -139,7 +139,7 @@ def big_big1():
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/big_big"
+    params['outfile'] = "results/big_big1"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
