@@ -128,6 +128,34 @@ def big_big():
 
     return params
 
+def big_big1():
+    params = {}
+
+    init = {}
+    init['N_H2O_ocean'] = 15.0e3
+    init['N_CO2'] = 23.*0.1
+    init['N_N2'] = 36.
+    init['M_i'] = 1.5e24
+    params['init'] = init
+
+    params['settings_in'] = "input/settings_Hadean.yaml"
+    params['outfile'] = "results/big_big"
+    params['eddy'] = 1e6
+    params['RH'] = 1.0
+    params['P_top'] = 1.0e-1
+    params['T_trop'] = 200
+    params['T_guess'] = 400
+    params['zero_out'] = ['NH3']
+    params['nz'] = 100
+    params['rainfall_rate'] = 1
+
+    params['P_top_min'] = 1.0e-7
+    params['atol'] = 1e-26
+    params['rtol'] = 1e-3
+    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*100e6),1000)
+
+    return params
+
 if __name__ == "__main__":
     threadpool_limits(limits=4)
     impact_evolve(**big_big())
