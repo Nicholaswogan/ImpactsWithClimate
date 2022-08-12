@@ -53,11 +53,11 @@ def make_actual_movie(location):
     subprocess.call(cmd,shell=True)
 
 if __name__ == "__main__":
-    threadpool_limits(limits=0)
+    threadpool_limits(limits=4)
 
-    location = '../movie1/'
-    istart = 420
+    location = '../movie2/'
+    istart = 433
 
-    make_movie(imp.nominal(), location, istart)
+    make_movie(imp.pretty_big(), location, istart)
     make_actual_movie(location)
 
