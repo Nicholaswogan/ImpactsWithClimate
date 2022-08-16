@@ -15,7 +15,7 @@ def make_movie(params, location, istart):
                 "input/Sun_4.0Ga.txt",\
                 params['outfile']+"_atmosphere.txt")
 
-    species = ['H2','N2','CO2','H2O','CH4','CO','HCN']
+    species = ['H2','N2','CO2','H2O','CH4','CO','HCaer1','HCN','HCCCN']
 
     for i in range(istart,len(sol_pc['time'])):
         plt.rcParams.update({'font.size': 15})
@@ -30,7 +30,7 @@ def make_movie(params, location, istart):
         ax.grid()
         ax.legend(ncol=2,bbox_to_anchor=(1,1.0),loc='upper left')
         ax.set_xscale('log')
-        ax.set_xlim(1e-10,2)
+        ax.set_xlim(1e-15,2)
 
         ax.set_ylim(0,sol_pc['alt'][-1,0])
         message = 'Time = '+'%.5e'%(sol_pc['time'][i]/cons.yr)+' yr' \
@@ -49,15 +49,15 @@ def make_movie(params, location, istart):
 def make_actual_movie(location):
     cmd = 'rm '+location+'output.mp4'
     subprocess.call(cmd,shell=True)
-    cmd = 'ffmpeg -framerate 10 -i '+location+'image-%04d.png -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" '+location+'output.mp4'
+    cmd = 'ffmpeg -framerate 16 -i '+location+'image-%04d.png -c:v libx264 -profile:v high -crf 20 -pix_fmt yuv420p -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" '+location+'output.mp4'
     subprocess.call(cmd,shell=True)
 
 if __name__ == "__main__":
     threadpool_limits(limits=4)
 
-    location = '../movie2/'
-    istart = 433
+    location = '../movie3/'
+    istart = 0
 
-    make_movie(imp.pretty_big(), location, istart)
+    make_movie(imp.nominal(), location, istart)
     make_actual_movie(location)
 

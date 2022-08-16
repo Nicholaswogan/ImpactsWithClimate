@@ -64,10 +64,6 @@ optical-properties:
       k-distributions: [H2O, CO2, CH4]
       CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
       rayleigh: true
-      particle-xs:
-        - {name: HCaer1, data: khare1984}
-        - {name: HCaer2, data: khare1984}
-        - {name: HCaer3, data: khare1984}
   solar:
     k-method: RandomOverlapResortRebin
     number-of-bins: 8
@@ -76,10 +72,6 @@ optical-properties:
       CIA: [CO2-CO2, N2-N2, CH4-CH4, H2-CH4, H2-H2, H2O-H2O, H2O-N2]
       rayleigh: true
       photolysis-xs: true
-      particle-xs:
-        - {name: HCaer1, data: khare1984}
-        - {name: HCaer2, data: khare1984}
-        - {name: HCaer3, data: khare1984}
   
 boundary-conditions:
 - name: O1D
