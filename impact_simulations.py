@@ -56,7 +56,7 @@ def nominal():
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/pretty_big"
+    params['outfile'] = "results/nominal"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
@@ -84,7 +84,7 @@ def nominal_more_carbon():
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/pretty_big"
+    params['outfile'] = "results/nominal_more_carbon"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
