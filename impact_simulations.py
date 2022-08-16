@@ -69,7 +69,7 @@ def nominal():
     params['P_top_min'] = 1.0e-7
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
-    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*10e6),1000)
+    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
 
     return params
 
@@ -97,7 +97,7 @@ def nominal_more_carbon():
     params['P_top_min'] = 1.0e-7
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
-    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*10e6),1000)
+    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
 
     return params
 
