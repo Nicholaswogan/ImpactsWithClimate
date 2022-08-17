@@ -73,18 +73,18 @@ def nominal():
 
     return params
 
-def nominal_more_carbon():
+def pretty_big():
     params = {}
 
     init = {}
     init['N_H2O_ocean'] = 15.0e3
-    init['N_CO2'] = 23.*1.0
+    init['N_CO2'] = 23.*0.5
     init['N_N2'] = 36.
-    init['M_i'] = 2.0e24
+    init['M_i'] = 1.5e24
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/nominal_more_carbon"
+    params['outfile'] = "results/pretty_big"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
@@ -101,18 +101,18 @@ def nominal_more_carbon():
 
     return params
 
-def nominal1():
+def sorta_big():
     params = {}
 
     init = {}
     init['N_H2O_ocean'] = 15.0e3
     init['N_CO2'] = 23.*0.5
     init['N_N2'] = 36.
-    init['M_i'] = 2.0e24
+    init['M_i'] = 1.0e24
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/nominal1"
+    params['outfile'] = "results/sorta_big"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
@@ -123,24 +123,24 @@ def nominal1():
     params['rainfall_rate'] = 1
 
     params['P_top_min'] = 1.0e-7
-    params['atol'] = 1e-26
+    params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
 
     return params
 
-def nominal2():
+def less_big():
     params = {}
 
     init = {}
     init['N_H2O_ocean'] = 15.0e3
     init['N_CO2'] = 23.*0.5
     init['N_N2'] = 36.
-    init['M_i'] = 2.0e24
+    init['M_i'] = 6.0e23
     params['init'] = init
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/nominal2"
+    params['outfile'] = "results/less_big"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
@@ -151,7 +151,35 @@ def nominal2():
     params['rainfall_rate'] = 1
 
     params['P_top_min'] = 1.0e-7
-    params['atol'] = 1e-24
+    params['atol'] = 1e-25
+    params['rtol'] = 1e-3
+    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+
+    return params
+
+def vesta():
+    params = {}
+
+    init = {}
+    init['N_H2O_ocean'] = 15.0e3
+    init['N_CO2'] = 23.*0.5
+    init['N_N2'] = 36.
+    init['M_i'] = 2.589e23
+    params['init'] = init
+
+    params['settings_in'] = "input/settings_Hadean.yaml"
+    params['outfile'] = "results/vesta"
+    params['eddy'] = 1e6
+    params['RH'] = 1.0
+    params['P_top'] = 1.0e-1
+    params['T_trop'] = 200
+    params['T_guess'] = 400
+    params['zero_out'] = ['NH3']
+    params['nz'] = 100
+    params['rainfall_rate'] = 1
+
+    params['P_top_min'] = 1.0e-7
+    params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
 
@@ -159,7 +187,7 @@ def nominal2():
 
 if __name__ == "__main__":
     threadpool_limits(limits=4)
-    impact_evolve(**nominal1())
+    impact_evolve(**nominal())
     
     
     
