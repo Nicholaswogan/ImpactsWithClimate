@@ -55,9 +55,9 @@ def make_actual_movie(location):
 if __name__ == "__main__":
     threadpool_limits(limits=4)
 
-    location = '../movie3/'
+    location = '../movie2/'
     istart = 0
 
-    make_movie(imp.nominal(), location, istart)
+    make_movie(imp.pretty_big(), location, istart)
     make_actual_movie(location)
 

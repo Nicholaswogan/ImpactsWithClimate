@@ -11,23 +11,24 @@ class Constants:
     yr = 365*24*60*60
 cons = Constants()
 
-def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, P_top_min, atol, rtol, t_eval):
-    N_H2O_ocean = init['N_H2O_ocean']
-    N_CO2 = init['N_CO2']
-    N_N2  = init['N_N2']
-    M_i = init['M_i']
-    stm = SteamAtm('zahnle_earth_ct.yaml')
-    sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i)
-
-    c = WaterAdiabatClimate('input/adiabat_species.yaml', \
-                            'input/adiabat_settings.yaml', \
-                            'input/Sun_4.0Ga.txt')
-
+def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
+    
+    if not restart_from_file:
+        N_H2O_ocean = init['N_H2O_ocean']
+        N_CO2 = init['N_CO2']
+        N_N2  = init['N_N2']
+        M_i = init['M_i']
+        stm = SteamAtm('zahnle_earth_ct.yaml')
+        sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i)
 
-    couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
-                 eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
+        c = WaterAdiabatClimate('input/adiabat_species.yaml', \
+                                'input/adiabat_settings.yaml', \
+                                'input/Sun_4.0Ga.txt')
+
+        couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
+                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
     
     pc = EvoAtmosphere(zahnle_earth,\
                        settings_out,\
@@ -35,6 +36,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
                        atmosphere_out)
 
     pc.var.mxsteps = 100000
+    pc.var.max_error_reinit_attempts = 5
     pc.T_trop = T_trop
     pc.P_top_min = P_top_min
     pc.P_top_max = 1e10
@@ -43,9 +45,11 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
     pc.var.atol = atol  
     pc.var.rtol = rtol      
     t_start = 0.0
-    success = pc.evolve(outfile+'.dat',t_start, pc.wrk.usol, t_eval, overwrite=True)
+    if restart_from_file:
+        pc.T_surf = T_surf_guess
+    success = pc.evolve(outfile+'.dat',t_start, pc.wrk.usol, t_eval, overwrite=False, restart_from_file=restart_from_file)
 
-def nominal():
+def nominal(restart_from_file=False, T_surf_guess=300):
     params = {}
 
     init = {}
@@ -70,10 +74,12 @@ def nominal():
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+    params['restart_from_file'] = restart_from_file
+    params['T_surf_guess'] = T_surf_guess
 
     return params
 
-def pretty_big():
+def pretty_big(restart_from_file=False, T_surf_guess=300):
     params = {}
 
     init = {}
@@ -98,10 +104,12 @@ def pretty_big():
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+    params['restart_from_file'] = restart_from_file
+    params['T_surf_guess'] = T_surf_guess
 
     return params
 
-def sorta_big():
+def sorta_big(restart_from_file=False, T_surf_guess=300):
     params = {}
 
     init = {}
@@ -126,10 +134,12 @@ def sorta_big():
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+    params['restart_from_file'] = restart_from_file
+    params['T_surf_guess'] = T_surf_guess
 
     return params
 
-def less_big():
+def less_big(restart_from_file=False, T_surf_guess=300):
     params = {}
 
     init = {}
@@ -154,10 +164,12 @@ def less_big():
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+    params['restart_from_file'] = restart_from_file
+    params['T_surf_guess'] = T_surf_guess
 
     return params
 
-def vesta():
+def vesta(restart_from_file=False, T_surf_guess=300):
     params = {}
 
     init = {}
@@ -182,6 +194,8 @@ def vesta():
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
     params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*30e6),1000)
+    params['restart_from_file'] = restart_from_file
+    params['T_surf_guess'] = T_surf_guess
 
     return params
 
