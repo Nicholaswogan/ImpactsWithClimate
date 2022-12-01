@@ -1,6 +1,6 @@
 import numpy as np
 
-from ImpactAtmosphere import SteamAtm
+from ImpactAtmosphere import SteamAtm, SteamAtmContinuous
 from photochem import EvoAtmosphere, zahnle_earth
 from photochem.utils._format import FormatSettings_main, yaml, MyDumper, Loader
 from clima import WaterAdiabatClimate
@@ -57,7 +57,7 @@ def couple2photochem(c, sol, settings_in, settings_out, atmosphere_out, \
 
 def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
                   P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
-                  Fe_react_frac, stm_mechanism, Ni_area):
+                  Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
     
@@ -67,8 +67,58 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
         N_N2  = init['N_N2']
         M_i = init['M_i']
         stm = SteamAtm(stm_mechanism, Fe_react_frac=Fe_react_frac, Ni_area=Ni_area)
-        # stm.atol = 1.0e-23
+        stm.rtol = stm_rtol
+        stm.atol = stm_atol
         sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i)
+        if perfect_conversion:
+            # We convert all CO2 to CH4 using H2 in the atmosphere.
+            CO2 = sol_stm['CO2'][-1]
+            sol_stm['CO2'][-1] = sol_stm['CO2'][-1] - CO2
+            sol_stm['H2'][-1] = sol_stm['H2'][-1] - 4*CO2
+            sol_stm['CH4'][-1] = sol_stm['CH4'][-1] + CO2
+            sol_stm['H2O'][-1] = sol_stm['H2O'][-1] + 2*CO2
+
+        c = WaterAdiabatClimate('input/adiabat_species.yaml', \
+                                'input/adiabat_settings.yaml', \
+                                'input/Sun_4.0Ga.txt')
+
+        couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
+                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
+    
+    pc = EvoAtmosphere(zahnle_earth,\
+                       settings_out,\
+                       "input/Sun_4.0Ga.txt",\
+                       atmosphere_out)
+
+    pc.var.mxsteps = 100000
+    pc.var.max_error_reinit_attempts = 100
+    pc.T_trop = T_trop
+    pc.P_top_min = P_top_min
+    pc.P_top_max = 1e10
+    pc.top_atmos_adjust_frac = 0.02
+
+    pc.var.atol = atol  
+    pc.var.rtol = rtol      
+    t_start = 0.0
+    if restart_from_file:
+        pc.T_surf = T_surf_guess
+    success = pc.evolve(outfile+'.dat',t_start, pc.wrk.usol, t_eval, overwrite=False, restart_from_file=restart_from_file)
+
+def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
+                             P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
+                             Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol):
+    settings_out = outfile+"_settings.yaml"
+    atmosphere_out = outfile+"_atmosphere.txt"
+    
+    if not restart_from_file:
+        N_H2O_ocean = init['N_H2O_ocean']
+        N_CO2 = init['N_CO2']
+        N_N2  = init['N_N2']
+        M_i = init['M_i']
+        stm = SteamAtmContinuous(stm_mechanism, Fe_react_frac=Fe_react_frac, Ni_area=Ni_area)
+        stm.rtol = stm_rtol
+        stm.atol = stm_atol
+        sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i,include_condensing_phase=False)
         if perfect_conversion:
             # We convert all CO2 to CH4 using H2 in the atmosphere.
             CO2 = sol_stm['CO2'][-1]

@@ -28,7 +28,7 @@ rm -rf clima
 # ImpactAtmosphere 
 git clone --recursive --branch=main https://github.com/Nicholaswogan/ImpactAtmosphere
 cd ImpactAtmosphere
-git checkout 9ea5fb6c3219a8c77efc374524436c515739b318
+git checkout 4439c3f39903ae02767b5b1af51421b6ff56fb88
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf ImpactAtmosphere

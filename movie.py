@@ -54,7 +54,6 @@ def make_movie(params, location, istart):
         fmt = '{:10}'
         print(fmt.format(i),fmt.format(len(sol_pc['time'])),end='\r')
 
-
 def make_actual_movie(location):
     cmd = 'rm '+location+'output.mp4'
     subprocess.call(cmd,shell=True)
