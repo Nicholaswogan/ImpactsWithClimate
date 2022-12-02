@@ -12,7 +12,7 @@ conda activate postimp
 # photochem
 git clone --recursive --branch=dev https://github.com/Nicholaswogan/photochem
 cd photochem
-git checkout 7ffb1eae9675f3a1f61d94169799b33352470351
+git checkout 8deb2684223a61303f2b2f837aca4bd668ad5d0f
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf photochem
@@ -20,7 +20,7 @@ rm -rf photochem
 # clima
 git clone --recursive --branch=dev https://github.com/Nicholaswogan/clima
 cd clima
-git checkout c6b05bdf2d5eccdc9db124e0d3fe6d04d8e44c55
+git checkout 8a73a8e08e657b5ac104162716200278c81c1eb8
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf clima
@@ -28,7 +28,7 @@ rm -rf clima
 # ImpactAtmosphere 
 git clone --recursive --branch=main https://github.com/Nicholaswogan/ImpactAtmosphere
 cd ImpactAtmosphere
-git checkout 4439c3f39903ae02767b5b1af51421b6ff56fb88
+git checkout b308e45da71b8739e91d070c92a0a8082aebb81f
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf ImpactAtmosphere

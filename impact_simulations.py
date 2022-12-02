@@ -15,7 +15,7 @@ def pretty_big(restart_from_file=False, T_surf_guess=300):
     params['perfect_conversion'] = False
 
     params['settings_in'] = "input/settings_Hadean.yaml"
-    params['outfile'] = "results/nominal/pretty_big"
+    params['outfile'] = "results/evolution/pretty_big"
     params['eddy'] = 1e6
     params['RH'] = 1.0
     params['P_top'] = 1.0e-1
@@ -35,12 +35,14 @@ def pretty_big(restart_from_file=False, T_surf_guess=300):
     params['Fe_react_frac'] = 1.0
     params['stm_mechanism'] = 'zahnle_earth_ct.yaml'
     params['Ni_area'] = 0.0
+    params['stm_rtol'] = 1e-10
+    params['stm_atol'] = 1e-20
 
     return params
 
 if __name__ == "__main__":
     threadpool_limits(limits=4)
-    impact_evolve(**pretty_big())
+    impact_evolve(**pretty_big(restart_from_file=True, T_surf_guess=380))
     
     
     
