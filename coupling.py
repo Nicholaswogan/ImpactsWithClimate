@@ -127,9 +127,9 @@ def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop
             sol_stm['CH4'][-1] = sol_stm['CH4'][-1] + CO2
             sol_stm['H2O'][-1] = sol_stm['H2O'][-1] + 2*CO2
 
-        c = WaterAdiabatClimate('input/adiabat_species.yaml', \
-                                'input/adiabat_settings.yaml', \
-                                'input/Sun_4.0Ga.txt')
+        c = AdiabatClimate('input/adiabat_species.yaml', \
+                           'input/adiabat_settings.yaml', \
+                           'input/Sun_4.0Ga.txt')
 
         couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
                     eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)

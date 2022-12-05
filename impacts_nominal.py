@@ -59,14 +59,14 @@ def nominal_imp_23_20(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.20
     params['outfile'] = "results/evolution/nominal/imp_23_20"
-    params['T_guess'] = 330
+    params['T_guess'] = 310
     return params
 
 def nominal_imp_23_30(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.30
     params['outfile'] = "results/evolution/nominal/imp_23_30"
-    params['T_guess'] = 330
+    params['T_guess'] = 320
     return params
 
 def nominal_imp_23_40(restart_from_file=False, T_surf_guess=300):
