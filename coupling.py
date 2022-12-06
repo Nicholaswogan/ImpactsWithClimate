@@ -66,7 +66,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
         N_CO2 = init['N_CO2']
         N_N2  = init['N_N2']
         M_i = init['M_i']
-        stm = SteamAtm(stm_mechanism, Fe_react_frac=Fe_react_frac, Ni_area=Ni_area)
+        stm = SteamAtm(stm_mechanism, Fe_react_frac=Fe_react_frac, Ni_area=Ni_area,include_condensing_phase=False)
         stm.rtol = stm_rtol
         stm.atol = stm_atol
         sol_stm = stm.impact(N_H2O_ocean,N_CO2,N_N2,M_i)
