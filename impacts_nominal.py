@@ -160,6 +160,27 @@ def nominal_imp_24_60(restart_from_file=False, T_surf_guess=300):
     params['T_guess'] = 440
     return params
 
+def nominal_imp_24_70(restart_from_file=False, T_surf_guess=300):
+    params = nominal(restart_from_file, T_surf_guess)
+    params['init']['M_i'] = 10.0**24.70
+    params['outfile'] = "results/evolution/nominal/imp_24_70"
+    params['T_guess'] = 450
+    return params
+
+def nominal_imp_24_80(restart_from_file=False, T_surf_guess=300):
+    params = nominal(restart_from_file, T_surf_guess)
+    params['init']['M_i'] = 10.0**24.80
+    params['outfile'] = "results/evolution/nominal/imp_24_80"
+    params['T_guess'] = 460
+    return params
+
+def nominal_imp_24_90(restart_from_file=False, T_surf_guess=300):
+    params = nominal(restart_from_file, T_surf_guess)
+    params['init']['M_i'] = 10.0**24.90
+    params['outfile'] = "results/evolution/nominal/imp_24_90"
+    params['T_guess'] = 470
+    return params
+
 if __name__ == "__main__":
     threadpool_limits(limits=2)
     models = [
@@ -179,11 +200,14 @@ if __name__ == "__main__":
         nominal_imp_24_30, 
         nominal_imp_24_40, 
         nominal_imp_24_50, 
-        nominal_imp_24_60 
+        nominal_imp_24_60,
+        nominal_imp_24_70,
+        nominal_imp_24_80,
+        nominal_imp_24_90
     ]
 
     def wrap(model):
         impact_evolve(**model())
-    p = Pool(48)
+    p = Pool(40)
     p.map(wrap, models)
     
