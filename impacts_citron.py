@@ -172,7 +172,7 @@ def citron_imp_24_40(restart_from_file=False, T_surf_guess=300):
     params = citron(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**24.40
     params['outfile'] = "results/evolution/citron/imp_24_40"
-    params['T_guess'] = 3
+    params['T_guess'] = 330
     iron = citron_interp.nominal_iron_interpolator()
     params['Fe_react_frac'] = iron(params['init']['M_i'])
     return params
@@ -226,15 +226,6 @@ def citron_imp_25_00(restart_from_file=False, T_surf_guess=300):
     params = citron(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**25.00
     params['outfile'] = "results/evolution/citron/imp_25_00"
-    params['T_guess'] = 370
-    iron = citron_interp.nominal_iron_interpolator()
-    params['Fe_react_frac'] = iron(params['init']['M_i'])
-    return params
-
-def citron_imp_25_00(restart_from_file=False, T_surf_guess=300):
-    params = citron(restart_from_file, T_surf_guess)
-    params['init']['M_i'] = 10.0**25.00
-    params['outfile'] = "results/evolution/citron/imp_25_00"
     params['T_guess'] = 380
     iron = citron_interp.nominal_iron_interpolator()
     params['Fe_react_frac'] = iron(params['init']['M_i'])
@@ -245,15 +236,6 @@ def citron_imp_25_10(restart_from_file=False, T_surf_guess=300):
     params['init']['M_i'] = 10.0**25.10
     params['outfile'] = "results/evolution/citron/imp_25_10"
     params['T_guess'] = 380
-    iron = citron_interp.nominal_iron_interpolator()
-    params['Fe_react_frac'] = iron(params['init']['M_i'])
-    return params
-
-def citron_imp_25_20(restart_from_file=False, T_surf_guess=300):
-    params = citron(restart_from_file, T_surf_guess)
-    params['init']['M_i'] = 10.0**25.20
-    params['outfile'] = "results/evolution/citron/imp_25_20"
-    params['T_guess'] = 400
     iron = citron_interp.nominal_iron_interpolator()
     params['Fe_react_frac'] = iron(params['init']['M_i'])
     return params
@@ -282,8 +264,7 @@ if __name__ == "__main__":
         citron_imp_24_80,
         citron_imp_24_90,
         citron_imp_25_00,
-        citron_imp_25_10,
-        citron_imp_25_20
+        citron_imp_25_10
     ]
 
     def wrap(model):
