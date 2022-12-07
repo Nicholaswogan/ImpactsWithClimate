@@ -108,7 +108,7 @@ def nominal_imp_23_90(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.90
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_23_90"
-    params['T_guess'] = 350
+    params['T_guess'] = 330
     return params
 
 def nominal_imp_24_00(restart_from_file=False, T_surf_guess=300):
@@ -174,13 +174,6 @@ def nominal_imp_24_80(restart_from_file=False, T_surf_guess=300):
     params['T_guess'] = 460
     return params
 
-def nominal_imp_24_90(restart_from_file=False, T_surf_guess=300):
-    params = nominal(restart_from_file, T_surf_guess)
-    params['init']['M_i'] = 10.0**24.90
-    params['outfile'] = "results/evolution/nominal_CO2_10/imp_24_90"
-    params['T_guess'] = 470
-    return params
-
 if __name__ == "__main__":
     threadpool_limits(limits=1)
     models = [
@@ -202,8 +195,7 @@ if __name__ == "__main__":
         nominal_imp_24_50, 
         nominal_imp_24_60,
         nominal_imp_24_70,
-        nominal_imp_24_80,
-        nominal_imp_24_90
+        nominal_imp_24_80
     ]
 
     def wrap(model):

@@ -130,6 +130,8 @@ def citron_imp_23_90(restart_from_file=False, T_surf_guess=300):
     params['T_guess'] = 330
     iron = citron_interp.nominal_iron_interpolator()
     params['Fe_react_frac'] = iron(params['init']['M_i'])
+    params['stm_rtol'] = 1e-9
+    params['stm_atol'] = 1e-25
     return params
 
 def citron_imp_24_00(restart_from_file=False, T_surf_guess=300):
