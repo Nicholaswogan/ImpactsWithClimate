@@ -5,6 +5,32 @@ from photochem import EvoAtmosphere, zahnle_earth
 from photochem.utils._format import FormatSettings_main, yaml, MyDumper, Loader
 from clima import AdiabatClimate
 
+def eddy_profile_like_Earth(log10P, log10P_trop):
+    """Generates an eddy diffusion profile like Earth's
+    """
+    slope = (3.6 - 5.4)/(-1 - (-4))
+    eddy_upper = 5.6
+    eddy_trop = 5.0
+    eddy_cold_trap = 3.6
+
+    eddy = np.zeros(len(log10P))
+
+    inds = np.where(log10P > log10P_trop)
+    eddy[inds] = eddy_trop
+
+    ind = np.max(inds) + 1
+
+    x = log10P[ind]
+    y = eddy_cold_trap
+    b = y - slope*x
+
+    for i in range(ind,len(log10P)):
+        eddy[i] = slope*log10P[i] + b
+
+    eddy[eddy>eddy_upper] = eddy_upper
+
+    return 10.0**eddy
+
 def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess, zero_out):
     N_i = np.empty(len(c.species_names))
     for i,sp in enumerate(c.species_names):
@@ -16,7 +42,15 @@ def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess
     c.P_top = P_top
     c.T_trop = T_trop
     T = c.surface_temperature_column(N_i, T_guess=T_guess) 
-    eddy_ = np.ones(len(c.z))*eddy 
+    if isinstance(eddy, (int, float)) and not isinstance(eddy, bool):
+        eddy_ = np.ones(len(c.z))*eddy # eddy is just a scalar
+    elif eddy == "ModernEarth":
+        ind = (c.T-c.T_trop==0).argmax()
+        log10P_trop = np.log10(c.P[ind]/1e6) # trop pressure in log10 bars
+        log10P = np.log10(c.P.copy()/1e6) # pressure in the atmosphere in bars
+        # compute eddy diffusion that is like Earth's
+        eddy_ = eddy_profile_like_Earth(log10P, log10P_trop) 
+
     c.out2atmosphere_txt(atmosphere_out, eddy_)    
 
 def make_settings(infile, outfile, ztop, nz, RH, rainfall_rate, trop_alt):
