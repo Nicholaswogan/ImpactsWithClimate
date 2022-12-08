@@ -91,7 +91,7 @@ def couple2photochem(c, sol, settings_in, settings_out, atmosphere_out, \
 
 def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
                   P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
-                  Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol):
+                  Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
     
@@ -129,7 +129,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
     pc.T_trop = T_trop
     pc.P_top_min = P_top_min
     pc.P_top_max = 1e10
-    pc.top_atmos_adjust_frac = 0.02
+    pc.top_atmos_adjust_frac = top_atmos_adjust_frac
 
     pc.var.atol = atol  
     pc.var.rtol = rtol      
@@ -140,7 +140,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
 
 def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
                              P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
-                             Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol):
+                             Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
     
@@ -178,7 +178,7 @@ def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop
     pc.T_trop = T_trop
     pc.P_top_min = P_top_min
     pc.P_top_max = 1e10
-    pc.top_atmos_adjust_frac = 0.02
+    pc.top_atmos_adjust_frac = top_atmos_adjust_frac
 
     pc.var.atol = atol  
     pc.var.rtol = rtol      

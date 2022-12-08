@@ -40,6 +40,17 @@ def nominal_full(restart_from_file=False, T_surf_guess=300):
 
     return params
 
+def nominal_Ni_full(restart_from_file=False, T_surf_guess=300):
+    params = nominal_full(restart_from_file, T_surf_guess)
+    params['outfile'] = "results/evolution/nominal_Ni_full"
+
+    params['stm_mechanism'] = 'Methanation_Ni.yaml'
+    params['Ni_area'] = 10.0
+    params['top_atmos_adjust_frac'] = 0.01
+    params['T_guess'] = 380
+
+    return params
+
 if __name__ == "__main__":
     threadpool_limits(limits=4)
     impact_evolve(**nominal_full())
