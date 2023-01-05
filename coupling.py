@@ -31,7 +31,32 @@ def eddy_profile_like_Earth(log10P, log10P_trop):
 
     return 10.0**eddy
 
-def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess, zero_out):
+def add_particle_radius_to_file(rp, filename):
+    fmt = '{:27}'
+    particles = ['HCaer1_r', 'HCaer2_r', 'HCaer3_r']
+    new_file = []
+
+    with open(filename) as f:
+        lines = f.readlines()
+
+    tmp = lines[0].replace('\n','')
+    for part in particles:
+        tmp += fmt.format(part)
+    tmp +='\n'
+    new_file.append(tmp)
+
+    for i,line in enumerate(lines[1:]):
+        tmp1 = line.replace('\n','')+'   '
+        for part in particles:
+            tmp1 += fmt.format('%.18e'%rp)
+        tmp1 +='\n'
+        new_file.append(tmp1)
+
+    with open(filename,'w') as f:
+        for i,line in enumerate(new_file):
+            f.write(line)
+
+def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess, zero_out, rp):
     N_i = np.empty(len(c.species_names))
     for i,sp in enumerate(c.species_names):
         if sp in zero_out:
@@ -51,7 +76,9 @@ def make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess
         # compute eddy diffusion that is like Earth's
         eddy_ = eddy_profile_like_Earth(log10P, log10P_trop) 
 
-    c.out2atmosphere_txt(atmosphere_out, eddy_)    
+    c.out2atmosphere_txt(atmosphere_out, eddy_)
+
+    add_particle_radius_to_file(rp, atmosphere_out) 
 
 def make_settings(infile, outfile, ztop, nz, RH, rainfall_rate, trop_alt):
 
@@ -79,8 +106,8 @@ def make_settings(infile, outfile, ztop, nz, RH, rainfall_rate, trop_alt):
     fil.close()
     
 def couple2photochem(c, sol, settings_in, settings_out, atmosphere_out, \
-                     eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate):
-    make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess, zero_out)
+                     eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, rp):
+    make_atmosphere_txt(c, sol, atmosphere_out, eddy, RH, P_top, T_trop, T_guess, zero_out, rp)
     
     ind = (c.T-c.T_trop==0).argmax()
     trop_alt = c.z[ind]
@@ -91,7 +118,7 @@ def couple2photochem(c, sol, settings_in, settings_out, atmosphere_out, \
 
 def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
                   P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
-                  Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02):
+                  Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02, rp = 1.0e-5):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
     
@@ -117,7 +144,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
                            'input/Sun_4.0Ga.txt')
 
         couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
-                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
+                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, rp)
     
     pc = EvoAtmosphere(zahnle_earth,\
                        settings_out,\
@@ -140,7 +167,7 @@ def impact_evolve(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, 
 
 def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, 
                              P_top_min, atol, rtol, t_eval, restart_from_file, T_surf_guess, perfect_conversion, 
-                             Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02):
+                             Fe_react_frac, stm_mechanism, Ni_area, stm_rtol, stm_atol, top_atmos_adjust_frac=0.02, rp = 1.0e-5):
     settings_out = outfile+"_settings.yaml"
     atmosphere_out = outfile+"_atmosphere.txt"
     
@@ -166,7 +193,7 @@ def impact_evolve_continuous(init, settings_in, outfile, eddy, RH, P_top, T_trop
                            'input/Sun_4.0Ga.txt')
 
         couple2photochem(c, sol_stm, settings_in, settings_out, atmosphere_out, \
-                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate)
+                    eddy, RH, P_top, T_trop, T_guess, zero_out, nz, rainfall_rate, rp)
     
     pc = EvoAtmosphere(zahnle_earth,\
                        settings_out,\
