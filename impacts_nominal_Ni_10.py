@@ -29,7 +29,7 @@ def nominal(restart_from_file=False, T_surf_guess=300):
     params['P_top_min'] = 1.0e-7
     params['atol'] = 1e-25
     params['rtol'] = 1e-3
-    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*1e4),100)
+    params['t_eval'] = np.logspace(np.log10(cons.yr),np.log10(cons.yr*1e4),10)
     params['restart_from_file'] = restart_from_file
     params['T_surf_guess'] = T_surf_guess
 
