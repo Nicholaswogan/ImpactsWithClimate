@@ -12,7 +12,7 @@ conda activate postimp
 # photochem
 git clone --recursive --branch=dev https://github.com/Nicholaswogan/photochem
 cd photochem
-git checkout 8deb2684223a61303f2b2f837aca4bd668ad5d0f
+git checkout 07344cac846ddf62f9f0ccbdc4ee9186b09b034f
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf photochem
@@ -20,7 +20,7 @@ rm -rf photochem
 # clima
 git clone --recursive --branch=dev https://github.com/Nicholaswogan/clima
 cd clima
-git checkout 12b56645c6fe4490f5c2d7bb61655e5f480cbe13
+git checkout 96dd6d7d086713811a5bde50757527e329233a98
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf clima
