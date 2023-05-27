@@ -143,7 +143,7 @@ def nominal_imp_24_40(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**24.40
     params['outfile'] = "results/evolution/nominal_Ni_10/imp_24_40"
-    params['T_guess'] = 410
+    params['T_guess'] = 420
     return params
 
 def nominal_imp_24_50(restart_from_file=False, T_surf_guess=300):
@@ -178,7 +178,7 @@ def nominal_imp_24_90(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**24.90
     params['outfile'] = "results/evolution/nominal_Ni_10/imp_24_90"
-    params['T_guess'] = 460
+    params['T_guess'] = 500
     return params
 
 if __name__ == "__main__":

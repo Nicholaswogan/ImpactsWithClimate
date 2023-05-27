@@ -228,7 +228,7 @@ def citron_imp_25_00(restart_from_file=False, T_surf_guess=300):
     params = citron(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**25.00
     params['outfile'] = "results/evolution/citron_Ni_10/imp_25_00"
-    params['T_guess'] = 380
+    params['T_guess'] = 370
     iron = citron_interp.nominal_iron_interpolator()
     params['Fe_react_frac'] = iron(params['init']['M_i'])
     return params

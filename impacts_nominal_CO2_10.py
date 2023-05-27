@@ -80,7 +80,7 @@ def nominal_imp_23_50(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.50
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_23_50"
-    params['T_guess'] = 340
+    params['T_guess'] = 350
     return params
 
 def nominal_imp_23_60(restart_from_file=False, T_surf_guess=300):
@@ -94,28 +94,28 @@ def nominal_imp_23_70(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.70
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_23_70"
-    params['T_guess'] = 340
+    params['T_guess'] = 350
     return params
 
 def nominal_imp_23_80(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.80
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_23_80"
-    params['T_guess'] = 350
+    params['T_guess'] = 360
     return params
 
 def nominal_imp_23_90(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**23.90
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_23_90"
-    params['T_guess'] = 330
+    params['T_guess'] = 370
     return params
 
 def nominal_imp_24_00(restart_from_file=False, T_surf_guess=300):
     params = nominal(restart_from_file, T_surf_guess)
     params['init']['M_i'] = 10.0**24.00
     params['outfile'] = "results/evolution/nominal_CO2_10/imp_24_00"
-    params['T_guess'] = 350
+    params['T_guess'] = 370
     return params
 
 def nominal_imp_24_10(restart_from_file=False, T_surf_guess=300):
