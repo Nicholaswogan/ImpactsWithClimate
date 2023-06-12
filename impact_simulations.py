@@ -63,7 +63,7 @@ def nominal_NH3_full(restart_from_file=False, T_surf_guess=300):
 
 if __name__ == "__main__":
     threadpool_limits(limits=4)
-    impact_evolve(**nominal_NH3_full(restart_from_file=True, T_surf_guess=370))
+    impact_evolve(**nominal_NH3_full(restart_from_file=False, T_surf_guess=370))
     
     
     

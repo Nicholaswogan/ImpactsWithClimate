@@ -54,7 +54,7 @@ particles:
 - name: N2Oaer
   condensation-rate: {A: 1.0e-8, rhc: 1.0, rh0: 1.05}
 - name: NH3aer
-  condensation-rate: {A: 1.0e-8, rhc: 1.0, rh0: 1.05}  
+  condensation-rate: {A: 1.0e-8, rhc: 1.0e30, rh0: 1.05e30} # prevents NH3 condensation
 
 optical-properties:
   ir:
