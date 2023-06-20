@@ -4,7 +4,7 @@ Following commands download all code needed to reproduce results. Must have a Fo
 
 ```sh
 # create conda environment
-conda create -n postimp -c conda-forge python=3.9 numpy scipy pyyaml scikit-build cython jupyter cantera matplotlib pathos threadpoolctl numba h5py
+conda create -n postimp -c conda-forge python=3.9 numpy scipy pyyaml scikit-build cython jupyter cantera matplotlib pathos threadpoolctl numba h5py cmake ninja
 
 # activate
 conda activate postimp 
@@ -20,7 +20,7 @@ rm -rf photochem
 # clima
 git clone --recursive --branch=dev https://github.com/Nicholaswogan/clima
 cd clima
-git checkout 9269e287d1eaa2d8c8e97eadb0d32bfe064fc924
+git checkout 08873c328ed830f1a189e66e9bd9e303953c4a86
 python -m pip install --no-deps --no-build-isolation . -v
 cd ..
 rm -rf clima
